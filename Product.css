@@ -1,0 +1,223 @@
+.product {
+  margin-bottom: 2vh; /* Use viewport height for margin */
+  margin-right: 2vw;
+  text-align: left; /* Text aligned to the left */
+  background-color: #fff;
+  padding: 2vh; /* Use viewport height for padding */
+  border-radius: 0.5vh; /* Use viewport height for border radius */
+  transition: opacity 0.5s ease-in-out; /* Add a transition effect for opacity */
+}
+.product-score
+{
+  opacity: .4;
+  text-align: center;
+  line-height: 1.255vh;
+  font-weight: 700;
+  font-family: Mulish;
+  font-size: 8px;
+  background-color: green;
+  color: white;
+  position: relative;
+  width: 6.667vw;
+  height: 2.25vh;
+  top: 2.875vh;
+  left: 1.111vw
+
+
+}
+
+.product-card {
+  display: inline-block;
+  position:relative;
+  max-width: 345px;
+  margin-bottom: 15px;
+}
+
+.product-image {
+  width: 136px;
+  height: 188px;
+  transition: opacity 0.5s ease-in-out; /* Smooth transition for image */
+}
+
+.product h5 {
+  margin: 1vh 0; /* Use viewport height for margin */
+  font-family: Mulish, sans-serif;
+  font-size: 14px;
+}
+
+.product p {
+  margin: 1vh 0; /* Use viewport height for margin */
+}
+
+.price-container {
+  display: flex;
+  align-items: center;
+  gap: 1vw; /* Use viewport width for gap */
+  /* Use viewport height for margin */
+}
+
+.original-price {
+  color: black;
+  font-weight: 800;
+}
+
+.discount-price {
+  color: grey;
+  text-decoration: line-through;
+}
+
+.discount-badge {
+  background-color: rgba(255, 103, 70, 1);
+  color: white;
+  text-align: center;
+  font-size: 0.9em;
+  display: inline-block;
+  padding: 1px 5px;
+  border-radius: 0.5vh; /* Use viewport height for border radius */
+}
+
+@media screen and (max-width: 768px) {
+  .product {
+    margin-right: 2vw;
+    padding: 2vh; /* Use viewport height for padding */
+    margin-bottom: 2vh; /* Use viewport height for margin */
+  }
+
+  .product img {
+    height: 30vh; /* Use viewport height for image height */
+    margin-bottom: 1vh; /* Use viewport height for margin */
+  }
+
+  .product h5,
+  .product p {
+    font-size: 0.9em; /* Decrease font size for smaller screens */
+    margin: 1vh 0; /* Use viewport height for margin */
+  }
+
+  .price-container {
+    flex-direction: row; /* Keep prices horizontal */
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .original-price,
+  .discount-price,
+  .discount-badge {
+    font-size: 0.8em; /* Decrease font size for smaller screens */
+  }
+
+  .discount-badge {
+    padding: 0.5vh 1vw; /* Use viewport height and width for padding */
+    border-radius: 1vh; /* Adjust border-radius for smaller screens */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .product-score
+  {
+
+    margin: 0px;
+    padding-bottom: 1pxs;
+    opacity: .4;
+    text-align: center;
+    line-height: 1.255vh;
+    font-weight: 700;
+    font-family: Mulish;
+    font-size: 10px;
+    background-color: green;
+    color: white;
+    position: absolute;
+    width: 24px;
+    height: 13px;
+    top: .6vh;
+    left: 1.111vw
+
+
+  }
+  .price-container {
+    display: flex;
+    align-items: center;
+    gap: 1vw; /* Use viewport width for gap */
+    /* Use viewport height for margin */
+  }
+  .product {
+    margin-right: 2vw;
+    padding-left: 1vh;
+    padding-right: 1vh;
+    padding-bottom: 1vh;
+    padding-top: 1vh;/* Use smaller padding for very small screens */
+    margin-bottom: 0.2vh; /* Use smaller margin for very small screens */
+  }
+
+  .product img {
+    height: 23.5vh;
+    width: 37.778vw;
+    margin-bottom: 0vh; /* Use viewport height for image height */
+  }
+
+  .product h5 {
+    font-size: 14px;
+    margin: 0px;
+    font-family: Mulish;
+    font-weight: 700 !important;
+    /* Adjust font size for very small screens */
+  }
+
+  .product p {
+    margin-top: 2px;
+    font-size: 11px;
+    margin-bottom: 5px;
+    font-weight: 400;
+    /* Adjust font size for very small screens */
+  }
+
+  .original-price {
+    font-size: 12px; /* Adjust font size for very small screens */
+    font-weight: 700 !important;
+  }
+  .discount-price,
+  .discount-badge {
+    font-size: 11px;
+  }
+
+  .discount-badge {
+    width: 15vw;
+    height: 1.875vh;
+    padding: 1px 4px;
+    border-radius: 2.22vh;
+  }
+}
+.product {
+  opacity: 0;
+  transition: opacity 1s ease-in-out; /* Smooth transition for opacity */
+
+  /* Additional styles */
+}
+
+.product.fade-in {
+  
+  opacity: 1; /* Fully visible */
+}
+
+.product.fade-out {
+  opacity: 0; /* Fully transparent */
+}
+
+.product-image {
+  width: 136px;
+  height: 188px;
+  transition: opacity 1s ease-in-out;
+   /* Smooth transition for image opacity */
+
+  /* Additional styles */
+}
+
+.product-image.visible {
+  opacity: 1; /* Fully visible */
+}
+
+.product-image.hidden {
+  opacity: 0; /* Fully transparent */
+}
+
+/* Other styles remain the same */

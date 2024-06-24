@@ -1,0 +1,87 @@
+/* Container for the tags with spacing adjustments */
+.bt {
+  column-gap: 20px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 20px;
+}
+
+/* Ensures full width for the product category container */
+.product-categorie {
+  width: 100%;
+}
+
+/* Style for each tag button */
+.tap1 {
+  background-color: rgba(255, 255, 255, 1);
+  font-weight: 700;
+  width: 67px;
+  height: 32px;
+  padding: 5px 2px;
+  border: 1px solid rgba(237, 236, 236, 1);
+  border-radius: 5px;
+  font-size: 14px;
+  font-family: Mulish;
+  cursor: pointer;
+}
+
+/* Additional styles for clicked tag buttons */
+.tap1.clicked {
+  color: #FF3E6B; /* Change text color to pink */
+  border: 1px solid #FF3E6B; /* Example text color change */
+}
+
+/* Style for the tag container */
+.tag-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+   /* Adjust spacing as needed */
+}
+
+/* Style for the key names */
+.tag-key {
+  font-family: Mulish;
+  font-size: 6.5px;
+  color:  #EDECEC;
+  ;
+  margin-bottom: 2px; /* Adjust spacing as needed */
+  text-transform: capitalize; /* Capitalize the first letter */
+}
+
+/* Style for the tag cloud heading */
+.r {
+  font-family: Mulish;
+  margin-top: 35px;
+}
+
+/* Style for the tag cloud search heading */
+.s {
+  font-family: Mulish;
+  margin-top: 35px;
+}
+
+/* Style for the tag cloud container */
+.tag {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Style for the search header image */
+.header-image {
+  width: 24px; /* Adjust the size as needed */
+  height: 24px;
+  margin-top: 35px;
+  margin-bottom: 14px;
+  cursor: pointer; /* Adjust the margin as needed */
+}
+
+/* Style for the search header container */
+.header-right {
+  color: #629E58;
+  display: flex;
+  align-items: center;
+  column-gap: 4px;
+}

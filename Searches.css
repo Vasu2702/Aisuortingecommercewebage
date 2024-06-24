@@ -1,0 +1,70 @@
+.product-categories {
+  
+  width: 100%;
+
+
+
+}
+.btn{
+width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 5vw;
+}
+.category-button1
+{
+  
+  background-color:  rgba(255, 255, 255, 1);
+
+  width: Fixed (72px)px;
+  height: Fixed (32px)px;
+  font-weight: 700;
+  padding: 5px 2px 5px 2px;
+  gap: 8px;
+  border: 1px solid  rgba(237, 236, 236, 1);
+  border-radius: 5px 5px 5px 5px;
+ font-size: 14px;
+ 
+ font-family: Mulish;
+}
+.category-button2{
+ 
+  background-color:  rgba(255, 255, 255, 1);
+  border: 1px solid  rgba(237, 236, 236, 1);
+  font-size: 14px;
+  font-weight: 700;
+top: 419px;
+left: 110px;
+padding: 5px 2px 5px 2px;
+gap: 8px;
+border-radius: 5px 5px 5px 5px;
+
+font-family: Mulish;
+
+
+}
+.category-button3
+{
+  font-size: 14px;
+  
+  background-color:  rgba(255, 255, 255, 1);
+  width: Fixed (72px)px;
+  height: Fixed (32px)px;
+  font-weight: 700;
+  border: 1px solid  rgba(237, 236, 236, 1);
+  left: 198px;
+  padding: 5px 2px 5px 2px;
+  gap: 8px;
+  border-radius: 5px 5px 5px 5px;
+  
+
+  font-family: Mulish;
+  
+}
+.rs h3
+{
+  margin-top: 0px;
+}
+
+
+

@@ -1,0 +1,384 @@
+.gemini.active,
+.openai.active {
+  color:#FF3E6B; /* Change text color to pink */
+  border: 1px solid  #FF3E6B; /* Change border color to pink */
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 103;
+  left: 0;
+  width: 100%;
+  height:130.5vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  z-index: 1000; /* Ensure it's above other content */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 2vh 4vw;
+  border-radius: 1vh;
+  box-shadow: 0 2vh 5vw rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  text-align: center;
+}
+.s-i{
+  bottom: 3.4vh;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  /* top: 3vh; */
+  left: 72vw;
+}
+
+.modal-content {
+  position: fixed;
+  background-color: white;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px; /* Rounded corners */
+  padding-bottom: 190px;
+  
+  
+  width: 100%;
+  max-height: calc(100% - 50px); /* Adjust as needed */
+   /* Enable scrolling if content overflows */
+  
+}
+
+.close-icon {
+  position: absolute;
+  
+  top: 3vh;
+  right: 1vw;
+  cursor: pointer;
+}
+.one{
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ width: 100%;
+
+
+
+}
+.one p{
+  margin-top: 0vh;
+  font-size: 16px;
+  font-weight: 700 !important;
+  font-family: Mulish;
+  margin-bottom: 0px;
+  position: relative;
+  line-height: 20.08px;
+  left:1px
+}
+.sec{
+  position: relative;
+  width: 30px;
+height: 30px;
+top: 2.44px;
+
+gap: 0px;
+border: 1px 0px 0px 0px;
+
+
+}
+.mike{
+  bottom: 3.5vh;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  /* top: 3vh; */
+  left: 86vw;
+  gap: 0px;
+  
+
+
+  
+
+}
+
+
+
+.similar-products {
+  position: relative;
+  padding: 2vh; /* Use viewport height for padding */
+}
+
+.heading-container {
+  display: flex;
+  justify-content: flex-start; /* Align items to the start (left) */
+  align-items: center;
+   /* Use viewport height for margin */
+}
+
+.heading-container h1 {
+  margin: 0;
+}
+
+.search-bar-container {
+  position: sticky; /* Make the container relatively positioned */
+  margin-right: 3vw;
+}
+
+.search-bar {
+  position: relative; /* Make the container relatively positioned */
+  width: calc(100% - 4vw); /* Adjust the width to match the container width */
+  padding: 1vh 3vw 1vh 4vw; /* Adjust padding to make space for the icon */
+  border: 0.1vh solid #ddd; /* Use viewport height for border */
+  border-radius: 2vh; /* Use viewport height for border radius */
+ /* Use viewport height for margin */
+}
+
+.search-icon {
+  position: absolute; /* Position the icon absolute */
+  /* Center vertically */
+  transform: translateY(-155%); /* Center vertically */
+  color: #999; /* Color of the icon */
+  left: 1vw;
+        
+}
+
+.search-input {
+  width: calc(100% - 4vw - 2rem); /* Adjust input width to fit the container */
+  padding-left: 2rem; /* Add padding to the left to make space for icon */
+}
+h3{
+  
+  font-family: Mulish;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17.57px;
+  text-align: left;
+  margin-top: 0vh;
+
+
+}
+
+
+@media screen and (max-width: 768px) {
+  .search-bar {
+    width: calc(100% - 8vw); /* Adjust width for smaller screens */
+    padding-left: 5vw; /* Increase left padding to make space for icon */
+  }
+
+  .search-icon {
+    left: 2vw; /* Adjust left position */
+  }
+}
+
+@media screen and (max-width: 480px) {
+ 
+  
+  .gemini
+  {
+    position: relative;
+   
+margin-top: 20px;
+
+padding: 5px 2px 5px 2px;
+gap: 8px;
+border-radius: 5px 5px 5px 5px;
+width: 67px;
+    height:  32px;
+font-family: Mulish;
+font-size: 14px;
+font-weight: 700;
+line-height: 17.57px;
+text-align: center;
+background-color:  rgba(255, 255, 255, 1);
+border: 1px solid  rgba(237, 236, 236, 1);
+
+
+
+  }
+  .openai
+  {
+    position: relative;
+    
+    margin-left: 4vw;
+margin-top: 20px;
+padding: 5px 2px 5px 2px;
+gap: 8px;
+border-radius: 5px 5px 5px 5px;
+width: 67px;
+    height:  32px;
+font-family: Mulish;
+font-size: 14px;
+font-weight: 700;
+line-height: 17.57px;
+text-align: center;
+background-color:  rgba(255, 255, 255, 1);
+border: 1px solid  rgba(237, 236, 236, 1);
+  }
+  .english
+  {
+    position: relative;
+   
+top:1.5vh;
+
+padding: 5px 15px 5px 15px;
+gap: 8px;
+border-radius: 5px 5px 5px 5px;
+
+font-family: Mulish;
+font-size: 14px;
+font-weight: 700;
+line-height: 17.57px;
+text-align: center;
+background-color:  rgba(255, 255, 255, 1);
+border: 1px solid  rgba(237, 236, 236, 1);
+
+
+
+  }
+  .lang
+  {
+    position: relative;
+    display: flex;
+
+    left: 4.444vw;
+    column-gap: 3vw;
+
+  }
+  .hindi
+  {
+    position: relative;
+    
+    
+top:1.5vh;
+padding: 5px 15px 5px 15px;
+gap: 8px;
+border-radius: 5px 5px 5px 5px;
+
+font-family: Mulish;
+font-size: 14px;
+font-weight: 700;
+line-height: 17.57px;
+text-align: center;
+background-color:  rgba(255, 255, 255, 1);
+border: 1px solid  rgba(237, 236, 236, 1);
+  }
+  .tamil
+  {
+    position: relative;
+    
+   
+top:1.5vh;
+padding: 5px 15px 5px 15px;
+gap: 8px;
+border-radius: 5px 5px 5px 5px;
+
+font-family: Mulish;
+font-size: 14px;
+font-weight: 700;
+line-height: 17.57px;
+text-align: center;
+background-color:  rgba(255, 255, 255, 1);
+border: 1px solid  rgba(237, 236, 236, 1);
+  }
+  .telugu
+  {
+    position: relative;
+    
+    
+top:1.5vh;
+padding: 5px 15px 5px 15px;
+gap: 8px;
+border-radius: 5px 5px 5px 5px;
+
+font-family: Mulish;
+font-size: 14px;
+font-weight: 700;
+line-height: 17.57px;
+text-align: center;
+background-color:  rgba(255, 255, 255, 1);
+border: 1px solid  rgba(237, 236, 236, 1);
+  }
+  .modal-content {
+    position: fixed;
+    background-color: white;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px; /* Rounded corners */
+    
+    
+    
+    width: 100%;
+    max-height: calc(100% - 50px); /* Adjust as needed */
+     /* Enable scrolling if content overflows */
+    
+  }
+  .ai-assistance-image
+  {
+    left: 8px;
+    position: relative;
+    width: 100px;
+    height: 28.3px;
+
+
+
+  }
+  
+  
+  .search-bar {
+    font-family: Mulish;
+    padding-inline-start: 10vw;/* Increase left padding to make space for icon */
+    position: sticky;
+  }
+
+  
+
+input::placeholder{
+  right:10vw;
+}
+.close-icon {
+  position: absolute;
+  
+  top: 3vh;
+  right: 1vw;
+  cursor: pointer;
+}
+.gemini.active,
+.openai.active {
+  color:#FF3E6B; /* Change text color to pink */
+  border: 1px solid  #FF3E6B; /* Change border color to pink */
+}
+.english.active,
+.hindi.active {
+  color:#FF3E6B; /* Change text color to pink */
+  border: 1px solid  #FF3E6B; /* Change border color to pink */
+}
+.tamil.active,
+.telugu.active {
+  color:#FF3E6B; /* Change text color to pink */
+  border: 1px solid  #FF3E6B; /* Change border color to pink */
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 103;
+  left: 0;
+  width: 100%;
+  height:110.5vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  z-index: 1000; /* Ensure it's above other content */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+}
+.slick-list{
+  position: relative;
+  display: block;
+  overflow: visible;
+  margin: 0;
+  padding: 0;
+}
+
+
