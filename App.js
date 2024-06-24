@@ -153,7 +153,7 @@ function App() {
       redirect: "follow"
     };
 
-    fetch("https://cartesian-api.plotch.io/search/fetch", requestOptions)
+    fetch("KEY", requestOptions)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -258,7 +258,7 @@ function App() {
       redirect: "follow"
     };
 
-    fetch("https://cartesian-api.plotch.io/search/fetch", requestOptions)
+    fetch("Key", requestOptions)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -325,7 +325,7 @@ function App() {
       redirect: "follow"
     };
 
-    fetch("https://cartesian-api.plotch.io/search/fetch", requestOptions)
+    fetch("Key", requestOptions)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
