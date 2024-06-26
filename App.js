@@ -5,6 +5,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import Product from './Product';
 import Tapcloud from './Tapcloud.js'; // Assuming Product.js is in the same directory
 import Searches from './Searches.js';
+import Toggle from "./Toggle.js";
 import './App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesomeIcon
 import { faSearch } from '@fortawesome/free-solid-svg-icons'; // Import the search icon
@@ -21,21 +22,25 @@ const languageDictionary = {
     aiAssistant: 'Your AI Commerce Assistance',
     recentSearches: 'Recent Searches',
     placeholder: 'Ask Cartesian',
+    chatModeLabel : "Chat Mode",
   },
   hindi: {
     aiAssistant: 'आपका एआई वाणिज्य सहायक',
     recentSearches: 'हाल की खोजें',
     placeholder: 'कार्टेशियन से पूछें',
+    chatModeLabel : "चैट मोड",
   },
   tamil: {
     aiAssistant: 'உங்கள் ஏஐ வர்த்தக உதவி',
     recentSearches: 'சமீபத்திய தேடல்கள்',
     placeholder: 'கார்டேசியனை கேளுங்கள்',
+    chatModeLabel :  "அரட்டை முறை",
   },
   telugu: {
     aiAssistant: 'మీ ఏఐ వాణిజ్య సహాయం',
     recentSearches: 'ఇటీవలి శోధనలు',
     placeholder: 'కార్టేసియన్‌ని అడగండి',
+    chatModeLabel : "చాట్ మోడ్",
   },
 };
 
@@ -63,9 +68,12 @@ function App() {
   const [initialRender, setInitialRender] = useState(true);
   const [tagCloud, setTagCloud] = useState({});
   const [searchInitiated, setSearchInitiated] = useState(false);
+  const [imageBytes, setImageBytes] = useState(null);
+  const [includeTagCloud, setIncludeTagCloud] = useState(false); 
 
   const recognition = useRef(null);
   const inputref = useRef(''); // To store the final transcript
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     if (SpeechRecognition) {
@@ -106,15 +114,19 @@ function App() {
     }
     // Retrieve recent searches from local storage on mount
     const storedSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
-    setRecentSearches(storedSearches);
+    setRecentSearches(storedSearches); 
     const storedTagCloud = JSON.parse(localStorage.getItem('tagCloud')) || {};
     setTagCloud(storedTagCloud);
+    
     
     handleSearch("saree");
   }, []); // No need to include searchInput here, the effect should only run once
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
+  };
+  const handleToggleChange = (isChatModeActive) => {
+    setIncludeTagCloud(isChatModeActive); // Update state based on toggle
   };
 
   const handleSearchInputChange = (event) => {
@@ -131,18 +143,21 @@ function App() {
   };
  
 
-  const handleSearch = (searchTerm="saree",initialRender="true") => {
+  const handleSearch = (searchTerm="saree",initialRender="true",imageBytes = null) => {
     setSearchInitiated(true);
-    {initialRender? setInitialRender(true):setIsLoading(true)}; // Start loading
+    initialRender? setInitialRender(true):setIsLoading(true); // Start loading
 
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     const raw = JSON.stringify({
-      prompt:  searchTerm,
-      image_url:"",
-     action_intent: "search",
+      prompt: imageBytes ? '' : searchTerm,
+      image_url: '',
+      image_bytes: imageBytes || '',
+     action_intent:  imageBytes ? 'search_image_bytes' : 'search',
      model: activeModel,
+     chat_mode: includeTagCloud ? "Yes" : "No",
+     tag_cloud : includeTagCloud? tagCloud : {}, 
       num_items: "10"
     });
 
@@ -153,7 +168,7 @@ function App() {
       redirect: "follow"
     };
 
-    fetch("KEY", requestOptions)
+    fetch("Key", requestOptions)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -161,8 +176,9 @@ function App() {
         return response.json();
       })
       .then((data) => {
+        console.log(data)
         if (data.api_action_status === "success") {
-          const fetchedProducts = data.items.map((item, index) => ({
+          const fetchedProducts = (activelang === 'hindi' ? data.item_hi : data.items).map((item, index) => ({
             id: index + 1,
             name: item.provider_name.slice(0, 15), // Truncate to 10 characters
             img: item.image_link1,
@@ -182,27 +198,33 @@ function App() {
 
           setProducts(fetchedProducts);
           const storedTagCloud = JSON.parse(localStorage.getItem('tagCloud')) || {};
+         
 
         // Update the stored tag cloud with new key-value pairs from the API response
         const updatedTagCloud = { ...storedTagCloud };
+        console.log(updatedTagCloud)
+        console.log(data.tag_cloud) 
 
         Object.keys(data.tag_cloud).forEach((key) => {
           // Only update if new value is not empty and stored value is empty or doesn't exist
-          if (data.tag_cloud[key] !== "" || !(key in updatedTagCloud)) {
+          if (data.tag_cloud[key] !== ""  &&  data.tag_cloud[key] !== "0") {
             updatedTagCloud[key] = data.tag_cloud[key];
           }
         });
 
         // Store the updated tag cloud in local storage
+        console.log(updatedTagCloud)
         localStorage.setItem('tagCloud', JSON.stringify(updatedTagCloud));
 
         // Update the state with the new tag cloud
+         
         setTagCloud(updatedTagCloud);
           // Store the search term in local storage
-             if (searchTerm !== "saree") {
+             if (searchTerm !== "saree" && searchTerm!=="") {
             storeSearchTerm(searchTerm || searchInput);
           }
-          localStorage.setItem('tagCloud', JSON.stringify(data.tag_cloud));
+          console.log(data.tag_cloud)
+          
         } else {
           console.error("API action status:", data.api_action_status);
         }
@@ -218,11 +240,14 @@ function App() {
 
     console.log("Search input:", searchTerm); // Log the search term
     console.log("Request options:", requestOptions);
+    console.log("raw",raw)
+    
+
     
   };
 
   const storeSearchTerm = (term) => {
-    if(term !== "saree")
+    if(term !== "saree" && term!=="")
       {
     const updatedSearches = [term, ...recentSearches.filter(search => search !== term)].slice(0, 3);
     setRecentSearches(updatedSearches);
@@ -248,7 +273,9 @@ function App() {
       image_url: product.img,
       action_intent: "search_image",
       model: activeModel,
-      num_items: "10"
+      chat_mode: includeTagCloud ? "Yes" : "No",
+      tag_cloud : includeTagCloud? tagCloud : {}, 
+       num_items: "10"
     });
 
     const requestOptions = {
@@ -266,17 +293,18 @@ function App() {
         return response.json();
       })
       .then((data) => {
+        console.log(data)
         if (data.api_action_status === "success") {
-          const fetchedProducts = data.items.map((item, index) => ({
+          const fetchedProducts = (activelang === 'hindi' ? data.item_hi : data.items).map((item, index) => ({
             id: index + 1,
-            name: item.provider_name.slice(0, 15),
+            name: item.provider_name.slice(0, 15), // Truncate to 10 characters
             img: item.image_link1,
-            description: item.product_name.slice(0, 25),
+            description: item.product_name.slice(0, 25), // Truncate to 30 characters
             price: parseFloat(item.sale_price),
             url: item.product_url,
             score:item.score,
             originalPrice: parseFloat(item.price),
-            isVisible: false
+            isVisible: false // Set isVisible to false for newly fetched products
           }));
 
           fetchedProducts.forEach((produc) => {
@@ -285,7 +313,28 @@ function App() {
           });
 
           setProducts(fetchedProducts);
-          setTagCloud(data.tag_cloud);
+          const storedTagCloud = JSON.parse(localStorage.getItem('tagCloud')) || {};
+         
+
+        // Update the stored tag cloud with new key-value pairs from the API response
+        const updatedTagCloud = { ...storedTagCloud };
+        console.log(updatedTagCloud)
+        console.log(data.tag_cloud) 
+
+        Object.keys(data.tag_cloud).forEach((key) => {
+          // Only update if new value is not empty and stored value is empty or doesn't exist
+          if (data.tag_cloud[key] !== ""  &&  data.tag_cloud[key] !== "0") {
+            updatedTagCloud[key] = data.tag_cloud[key];
+          }
+        });
+
+        // Store the updated tag cloud in local storage
+        console.log(updatedTagCloud)
+        localStorage.setItem('tagCloud', JSON.stringify(updatedTagCloud));
+
+        // Update the state with the new tag cloud
+         
+        setTagCloud(updatedTagCloud);
         } else {
           console.error("API action status:", data.api_action_status);
         }
@@ -314,8 +363,10 @@ function App() {
       image_url: product.img,
       price: product.price,
       action_intent: "search_price",
-      num_items: "10",
-      model: activeModel
+      model: activeModel,
+      chat_mode: includeTagCloud ? "Yes" : "No",
+      tag_cloud : includeTagCloud? tagCloud : {}, 
+       num_items: "10"
     });
 
     const requestOptions = {
@@ -333,17 +384,18 @@ function App() {
         return response.json();
       })
       .then((data) => {
+        console.log(data)
         if (data.api_action_status === "success") {
-          const fetchedProducts = data.items.map((item, index) => ({
+          const fetchedProducts = (activelang === 'hindi' ? data.item_hi : data.items).map((item, index) => ({
             id: index + 1,
-            name: item.provider_name.slice(0, 15),
+            name: item.provider_name.slice(0, 15), // Truncate to 10 characters
             img: item.image_link1,
-            description: item.product_name.slice(0, 25),
+            description: item.product_name.slice(0, 25), // Truncate to 30 characters
             price: parseFloat(item.sale_price),
             url: item.product_url,
             score:item.score,
             originalPrice: parseFloat(item.price),
-            isVisible: false
+            isVisible: false // Set isVisible to false for newly fetched products
           }));
 
           fetchedProducts.forEach((produc) => {
@@ -352,7 +404,28 @@ function App() {
           });
 
           setProducts(fetchedProducts);
-          setTagCloud(data.tag_cloud);
+          const storedTagCloud = JSON.parse(localStorage.getItem('tagCloud')) || {};
+         
+
+        // Update the stored tag cloud with new key-value pairs from the API response
+        const updatedTagCloud = { ...storedTagCloud };
+        console.log(updatedTagCloud)
+        console.log(data.tag_cloud) 
+
+        Object.keys(data.tag_cloud).forEach((key) => {
+          // Only update if new value is not empty and stored value is empty or doesn't exist
+          if (data.tag_cloud[key] !== "" &&  data.tag_cloud[key] !== "0") {
+            updatedTagCloud[key] = data.tag_cloud[key];
+          }
+        });
+
+        // Store the updated tag cloud in local storage
+        console.log(updatedTagCloud)
+        localStorage.setItem('tagCloud', JSON.stringify(updatedTagCloud));
+
+        // Update the state with the new tag cloud
+         
+        setTagCloud(updatedTagCloud);
         } else {
           console.error("API action status:", data.api_action_status);
         }
@@ -388,7 +461,25 @@ console.log(product.price);
     handleSearch(searchQuery, false);
     setSearchInput("");
   };
- 
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result.split(',')[1];
+        console.log(base64String)
+        setImageBytes(base64String); // Store the base64 string in the state
+        handleSearch("", false, base64String); // Trigger the search with the image
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleImageSearchClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click(); // Trigger the file input click event
+    }
+  };
   const handlelangButtonClick = (lang) => {
     setActivelang(lang);
   };
@@ -489,11 +580,19 @@ console.log(product.price);
                 <FontAwesomeIcon icon={faSearch} id="searchic" className="search-icon" onClick={() => handleSearch(searchInput,false)} />
                 
                 <img src={vector} alt="" className='mike' onClick={toggleListening} />
-                <img className="s-i" src={searchImage} alt="Search" />
+                <img className="s-i" src={searchImage} alt="Search" onClick={handleImageSearchClick} />
+                <input
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          style={{ display: 'none' }} // Hide the file input
+          onChange={handleImageUpload} // Handle image upload
+        />
                 
               </div>
+              <Toggle label={languageDictionary[activelang].chatModeLabel} onToggleChange={handleToggleChange}/>
               <Searches recentSearches={recentSearches} onRecentSearchClick={handleRecentSearchClick} lang={activelang}/>
-              <Tapcloud tag_cloud={tagCloud} onTagClick={handleTagClick} searchInitiated={searchInitiated}/>
+              <Tapcloud tag_cloud={tagCloud} onTagClick={handleTagClick} searchInitiated={searchInitiated} lang={activelang}/>
               
             </div>
           </div>
