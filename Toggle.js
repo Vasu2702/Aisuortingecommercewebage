@@ -1,18 +1,22 @@
 // Filename: ./components/ToggleSwitch.js
 
-import React, { useState} from "react";
+import React, { useState,useEffect} from "react";
 import "./Toggle.css";
 
-const Toggle = ({ label, onToggleChange }) => {
-    const [isChecked, setIsChecked] = useState(false);
+const Toggle = ({ label, onToggleChange ,defaultChecked }) => {
+	const [isChecked, setIsChecked] = useState(defaultChecked || false);
+	useEffect(() => {
+		setIsChecked(defaultChecked);
+	  }, [defaultChecked]);
+	
   
     const handleChange = () => {
-      setIsChecked(!isChecked);
-      onToggleChange(!isChecked); // Passes the new state of the toggle
+      setIsChecked(!isChecked); 
+      onToggleChange(!isChecked,label); // Passes the new state of the toggle
     };
 return (
 	<div className="container">
-<h3>{label}</h3>
+<h3 className="cm">{label}</h3> 
 	<div className="toggle-switch">
    
 		<input type="checkbox" className="checkbox"
