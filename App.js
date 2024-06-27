@@ -6,14 +6,19 @@ import Product from './Product';
 import Tapcloud from './Tapcloud.js'; // Assuming Product.js is in the same directory
 import Searches from './Searches.js';
 import Toggle from "./Toggle.js";
+import Cart from "./Cart.js";
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import './App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesomeIcon
 import { faSearch } from '@fortawesome/free-solid-svg-icons'; // Import the search icon
 import placeholderImage from './images/prod_default.png';
 import close from './images/close.png';
-import vector from './images/mic.png';
+import vector from './images/Ellipse 13.png';
 import searchImage from './images/image.png';
-import main from './images/android-chrome-192x192 1.png';
+import main from './images/android-chrome-192x192 1.svg';
+import mic from './images/mic.svg';
+import line from './images/Line 6.svg';
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -23,24 +28,29 @@ const languageDictionary = {
     recentSearches: 'Recent Searches',
     placeholder: 'Ask Cartesian',
     chatModeLabel : "Chat Mode",
+    BuyMode : "Buy Mode",
   },
   hindi: {
     aiAssistant: 'आपका एआई वाणिज्य सहायक',
     recentSearches: 'हाल की खोजें',
     placeholder: 'कार्टेशियन से पूछें',
     chatModeLabel : "चैट मोड",
+    BuyMode : "बाय मोड",
   },
   tamil: {
     aiAssistant: 'உங்கள் ஏஐ வர்த்தக உதவி',
     recentSearches: 'சமீபத்திய தேடல்கள்',
     placeholder: 'கார்டேசியனை கேளுங்கள்',
     chatModeLabel :  "அரட்டை முறை",
+    BuyMode : "பாய் மோடு",
   },
   telugu: {
     aiAssistant: 'మీ ఏఐ వాణిజ్య సహాయం',
     recentSearches: 'ఇటీవలి శోధనలు',
     placeholder: 'కార్టేసియన్‌ని అడగండి',
-    chatModeLabel : "చాట్ మోడ్",
+    chatModeLabel : "చాట్ మోడ్",                        
+
+    BuyMode : "బాయ్ మోడ్",
   },
 };
 
@@ -70,6 +80,7 @@ function App() {
   const [searchInitiated, setSearchInitiated] = useState(false);
   const [imageBytes, setImageBytes] = useState(null);
   const [includeTagCloud, setIncludeTagCloud] = useState(false); 
+  const [isBuyMode, setIsBuyMode] = useState(false);  
 
   const recognition = useRef(null);
   const inputref = useRef(''); // To store the final transcript
@@ -125,15 +136,18 @@ function App() {
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
-  const handleToggleChange = (isChatModeActive) => {
-    setIncludeTagCloud(isChatModeActive); // Update state based on toggle
+  const handleToggleChange = (isToggleActive, toggleLabel) => {
+    if (toggleLabel === languageDictionary[activelang].BuyMode) {
+      setIsBuyMode(isToggleActive);
+    } else {
+      setIncludeTagCloud(isToggleActive); // Update state based on toggle
+    }    
   };
-
   const handleSearchInputChange = (event) => {
     setSearchInput(event.target.value);
   };
 
-  const handleKeyPress = (event) => {
+  const handleKeyPress = (event) => { 
     if (event.key === 'Enter') {
       
       handleSearch(document.getElementById("search").value,false);
@@ -168,7 +182,7 @@ function App() {
       redirect: "follow"
     };
 
-    fetch("Key", requestOptions)
+    fetch("https://cartesian-api.plotch.io/search/fetch", requestOptions)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -285,7 +299,7 @@ function App() {
       redirect: "follow"
     };
 
-    fetch("Key", requestOptions)
+    fetch("https://cartesian-api.plotch.io/search/fetch", requestOptions)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -376,7 +390,7 @@ function App() {
       redirect: "follow"
     };
 
-    fetch("Key", requestOptions)
+    fetch("https://cartesian-api.plotch.io/search/fetch", requestOptions)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -514,10 +528,11 @@ console.log(product.price);
   };
 
   return (
+    <DndProvider backend={HTML5Backend}>
     <div className="page-container">
 
       {isOpen && (
-        <div className="modal-overlay">
+        <div   className="modal-overlay">
           <div className="modal-content">
             <div className="one">
             <img src={main} alt="AI Assistance" className="ai-assistance-image" />
@@ -578,8 +593,6 @@ console.log(product.price);
                   ref={inputref}
                 />
                 <FontAwesomeIcon icon={faSearch} id="searchic" className="search-icon" onClick={() => handleSearch(searchInput,false)} />
-                
-                <img src={vector} alt="" className='mike' onClick={toggleListening} />
                 <img className="s-i" src={searchImage} alt="Search" onClick={handleImageSearchClick} />
                 <input
           type="file"
@@ -590,10 +603,30 @@ console.log(product.price);
         />
                 
               </div>
-              <Toggle label={languageDictionary[activelang].chatModeLabel} onToggleChange={handleToggleChange}/>
-              <Searches recentSearches={recentSearches} onRecentSearchClick={handleRecentSearchClick} lang={activelang}/>
-              <Tapcloud tag_cloud={tagCloud} onTagClick={handleTagClick} searchInitiated={searchInitiated} lang={activelang}/>
+              <div className='image-cont'>
+              <img src={vector} alt="" className='mike' onClick={toggleListening} />
+              <img src={mic} alt="" className='mik' onClick={toggleListening} />
+              </div>
+              <div className='cmt'>
+              <Toggle label={languageDictionary[activelang].chatModeLabel} onToggleChange={handleToggleChange}  defaultChecked={includeTagCloud}/>
+              <Toggle label={languageDictionary[activelang].BuyMode} onToggleChange={handleToggleChange} defaultChecked={isBuyMode}/>
+              </div>
+              <img src={line} alt="" className='line'/>
               
+               {isBuyMode ? ( 
+       
+          <Cart  />
+        
+      ) : (
+        
+          <div className="recent-searches">
+          <Searches recentSearches={recentSearches} onRecentSearchClick={handleRecentSearchClick} lang={activelang}/>
+          
+          <div className="tapcloud-container">
+          <Tapcloud tag_cloud={tagCloud} onTagClick={handleTagClick} searchInitiated={searchInitiated} lang={activelang}/>
+          </div>
+        </div>
+      )}
             </div>
           </div>
         </div>
@@ -615,6 +648,7 @@ console.log(product.price);
       )}
       
     </div>
+    </DndProvider>
   );
 }
 
